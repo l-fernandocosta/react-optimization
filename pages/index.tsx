@@ -5,13 +5,10 @@ import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
   const [input, setInput] = useState('');
-
-
   function handleSubmit(){
       
     
   }
-  
   
   return (
     <div className={styles.container}>
