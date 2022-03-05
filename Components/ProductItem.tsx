@@ -1,21 +1,40 @@
-import { memo } from "react"
+import { memo, useState } from "react"
+import { WishListModalProps } from "./AddWishListModal"
+import dynamic from "next/dynamic"; 
 
-interface ProductProps {
+const AddWishListModal = dynamic<WishListModalProps>(async () => { return import('./AddWishListModal') }
+  , { loading: () => <span>Loading...</span> })
+
+export interface ProductProps {
   product: {
     price: number,
     id: number,
     title: string,
+    priceFormatted: number,
   },
-  onAddWishList: (id: number) => void 
+  onAddWishList: (id: number) => void
 }
 
 
-function ProductItemComponent({ product, onAddWishList}: ProductProps) {
+function ProductItemComponent({ product, onAddWishList }: ProductProps) {
+  
+  const [isOpenModal, setIsOpenModal] = useState(false)
   return (
+    
     <div >
-      {product.title} - <strong>${product.price}</strong> {product.id}
-      <button onClick={() => onAddWishList(product.id)}>Wish List</button>
+      {product.title} - <strong>${product.priceFormatted}</strong> {product.id}
+      <button onClick={() => setIsOpenModal(true)}> Favoritar </button>
+    
+      {isOpenModal && (
+        
+        <AddWishListModal
+          onAddToWishList={() => onAddWishList(product.id)}
+          onRequestClose={() => setIsOpenModal(false)}
+        />)
+      }
     </div>
+  
+
   )
 }
 

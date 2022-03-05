@@ -5,19 +5,46 @@ import SearchResults from '../Components/SearchResults'
 import styles from '../styles/Home.module.css'
 
 
+interface DataProps {
+  totalPrice: number,
+  data: any[],
+
+}
+
 const Home: NextPage = () => {
   const [input, setInput] = useState('');
-  const [results, setResults] = useState([]);
-  
-  async function handleSubmit(e: FormEvent){
-      e.preventDefault();
-      if(!input.trim()){
-        return null; 
-      }
+  const [results, setResults] = useState<DataProps>({
+    totalPrice: 0,
+    data: [],
+  });
 
-      const response = await fetch(`http://localhost:3333/products?q=${input}`) 
-      const data = await response.json();
-      setResults(data);
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!input.trim()) {
+      return null;
+    }
+
+    const response = await fetch(`http://localhost:3333/products?q=${input}`)
+    const data = await response.json();
+
+    const totalPrice = data.reduce((acc = 0, product: any) => {
+      return acc + product.price
+    }, 0)
+
+    const formatter = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',  
+      currency: 'BRL', 
+    })
+
+    const products = data.map((product: any) => {
+      return {
+        id: product.id, 
+        price: product.price, 
+        title: product.title,
+        priceFormatted: formatter.format(product.price),
+      }
+    })
+    setResults({ data: products, totalPrice });
   }
 
   const addWishList = useCallback((id: number) => {
@@ -32,13 +59,17 @@ const Home: NextPage = () => {
       </Head>
 
       <label>Search</label>
+
       <form onSubmit={handleSubmit}>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
         <button type='submit'>Buscar</button>
-        </form>
-        <SearchResults 
-        results={results}
-        onAddWishList = {addWishList}/>
+      </form>
+
+      <SearchResults
+        results={results.data}
+        totalPrice={results.totalPrice}
+        onAddWishList={addWishList}
+        />
     </div>
   )
 }
