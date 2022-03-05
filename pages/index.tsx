@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { FormEvent, FormEventHandler, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 import SearchResults from '../Components/SearchResults'
 import styles from '../styles/Home.module.css'
+
 
 const Home: NextPage = () => {
   const [input, setInput] = useState('');
@@ -18,7 +19,10 @@ const Home: NextPage = () => {
       const data = await response.json();
       setResults(data);
   }
-  
+
+  const addWishList = useCallback((id: number) => {
+    alert(`Produto: ${id}`)
+  }, [])
   return (
     <div className={styles.container}>
       <Head>
@@ -32,7 +36,9 @@ const Home: NextPage = () => {
         <input type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
         <button type='submit'>Buscar</button>
         </form>
-        <SearchResults results={results}/>
+        <SearchResults 
+        results={results}
+        onAddWishList = {addWishList}/>
     </div>
   )
 }
