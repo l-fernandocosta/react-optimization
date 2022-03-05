@@ -1,18 +1,18 @@
 
 export interface WishListModalProps {
   onRequestClose: () => void,
-  onAddToWishList: () => void, 
+  toWishList: () => void, 
 }
 
 
 export default function AddWishListModal({
-  onAddToWishList,
+  toWishList,
   onRequestClose
 }:WishListModalProps) {
   return (
     <div>
       Deseja adicionar à lista de desejo ?
-      <button onClick={onAddToWishList}>Sim</button>
+      <button onClick={toWishList}>Sim</button>
       <button onClick={onRequestClose}>Não</button>
     </div>
   )

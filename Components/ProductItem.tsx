@@ -10,7 +10,7 @@ export interface ProductProps {
     price: number,
     id: number,
     title: string,
-    priceFormatted: number,
+    priceFormatted: string,
   },
   onAddWishList: (id: number) => void
 }
@@ -28,7 +28,7 @@ function ProductItemComponent({ product, onAddWishList }: ProductProps) {
       {isOpenModal && (
         
         <AddWishListModal
-          onAddToWishList={() => onAddWishList(product.id)}
+          toWishList={() => onAddWishList(product.id)}
           onRequestClose={() => setIsOpenModal(false)}
         />)
       }
