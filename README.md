@@ -4,5 +4,5 @@
 * Utilizando Memo, hooks useMemo e useCallback, dynamic imports (nextjs) e virtualização (react-virtualized) 
 
 # Libs
-React Virtualized
-json-server
+* React Virtualized
+* json-server
